@@ -1,0 +1,195 @@
+{% extends "layout.tpl" %}
+{% block main %}
+{% include "top.tpl" %}
+  <div class="container-fluid">
+    <section id="gaiyo" class="fadeintop">
+      <div class="row">
+        <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+          <h2><span class="glyphicon glyphicon-th-list"></span> 概要</h2>
+          <p>Chemistry with Informatics</p>
+          <dl class="dl-horizontal">
+            <dt>testtsettest</dt><dd>test</dd>
+          </dl>
+        </div>
+        <div class="col-lg-5 col-md-6 col-sm-6 hidden-xs">
+          <h2><span class="glyphicon glyphicon-info-sign"></span> 新着情報</h2>
+          <dl class="dl-horizontal">
+            <dt >R02.07.03</dt><dd>ホームページを開設しました。</dd>
+          </dl>
+        </div>
+        <div class="clearfix visible-md visible-sm"></div>
+      </div>
+    </section>
+    <section id="psq">
+      <h1>PSQ水分離膜性能予測</h1>
+      <h2>Comming soon...</h2>
+      <div class="clearfix"></div>
+    </section>
+    <section id="qy">
+    <h1>量子収率予測</h1>
+    <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
+    <form name="form" action="{{url_for('qy',_anchor='qy',_method='POST')}}" method="post" class="m-1 py-2 row">
+    <div class="form-group has-search col-md-6">
+      <span class="fa fa-search form-control-feedback"></span>
+      <input type="search" name="smi" class="form-control" placeholder="{% if smi %}{{smi}}{%else%}Enter SMILES{%endif%}">
+    </div>
+    </form>
+    {% if qy %}
+      <p>predicted quantum yield is {{qy}}</p>
+    {% endif %}
+
+      <div class="clearfix"></div>
+      <h3>説明</h3>
+      <ul style="margin-left:1em">
+        <li>量子収率を知りたい分子のSMILESを入力してください。</li>
+      </ul>
+      <div class="clearfix"></div>
+    </section>
+    <section id="link">
+      <h1>リンク</h1>
+      <ul style="margin-left:1em">
+        <li><a target="_blank" href="https://home.hiroshima-u.ac.jp/orgmtrls/Ohshita_Group/Ohshita_Group-Home.html">広島大学有機元素材料化学研究室</a></li>
+        <li><a target="_blank" href="http://www.bio.info.hiroshima-cu.ac.jp">広島市立大学バイオ情報学研究室</a></li>
+      </ul>
+    </section>
+  </div>
+  <footer class="container-fluid">
+    <section>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6">
+        </div>
+        <div class="pull-right col-xs-12 col-sm-6">
+          <span class="glyphicon glyphicon-copyright-mark"></span> 2020 Hiroshima Chemistry Group<br>
+          <p>ページ上部写真提供：広島県</p>
+          <a href="#" title="ページトップへ"><span style="font-size:60px;" class="glyphicon glyphicon-collapse-up hidden-xs"></span></a>
+        </div>
+      </div>
+    </section>
+  </footer>
+  <div class="clearfix"></div>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
+<script defer>
+if(!navigator.userAgent.match(/(iPhone|Android)/)){
+  $(function() {
+    var $win = $(window),
+        $nav = $('nav'),
+        docmentHeight = $(document).height(),
+        navPos = $nav.offset().top,
+        fixedClass = 'is-fixed',
+        hideClass = 'is-hide';
+    $(".poster").mouseout(function(){
+        docmentHeight = $(document).height();
+    });
+    $win.on('load scroll', function() {
+      var value = $(this).scrollTop(),
+          scrollPos = $win.height() + value;
+
+      if ( value > navPos ) {
+        if ( (docmentHeight - scrollPos) / scrollPos <= 0.01 ) {
+          $nav.addClass(hideClass);
+          docmentHeight = $(document).height();
+        } else {
+          $nav.removeClass(hideClass);
+        }
+        $nav.addClass(fixedClass);
+      } else {
+        $nav.removeClass(fixedClass);
+        $nav.removeClass(hideClass);
+      }
+    });
+  });
+};
+</script>
+<script defer>
+if(navigator.userAgent.match(/iPad/)){
+$(document).on('touchmove', function(e) {
+  if (!$(e.target).closest('.dropdown-menu').length) {
+    $('.dropdown-menu').fadeOut();
+    $('[data-toggle=popover]').popover("hide");
+  }
+});
+};
+$(function(){
+  var JMargin = 20;
+  var $drop = $('.dropdown-menu');
+  if(navigator.userAgent.match(/iPad/)){
+    $('a[href^="#"]').on('touchstart',SwJump);
+    $('a[href^="#s"]').on('touchend',function(){
+      $(this).closest('.dropdown-menu').addClass('hide');
+    });
+  }else{
+    $('a[href^="#"]').click(SwJump);
+  };
+  function SwJump () {
+    $drop.removeClass('hide');
+    var speed = 600,
+        href = $(this).attr("href"),
+        target = $(href == "#" || href == "" ? 'html' : href);
+    if( href.indexOf('#s') === 0){
+        JMargin =60;
+    }else{
+        JMargin =20;
+    }
+    var position = target.offset().top-JMargin;
+    $('body,html').animate({scrollTop:position}, speed, 'swing');
+    return false;
+  }
+  $('[data-toggle=popover]').popover({
+    trigger: 'focus,hover'
+  });
+});
+</script>
+<script defer>
+if(navigator.userAgent.match(/(iPhone|Android)/)){
+  $(document).ready(function () {
+    $(".navbar-nav li a").click(function(event) {
+    $(".navbar-collapse").collapse('hide');
+    });
+    $('.oral').on('touchstart touchend', function() {
+      $('[data-toggle=popover]').popover("hide");
+    });
+  });
+};
+</script>
+<script defer>
+$(function(){
+  $(window).scroll(function (){
+    $('.fadein').each(function(){
+      var elemPos = $(this).offset().top,
+      scroll = $(window).scrollTop(),
+      windowHeight = $(window).height();
+      if (scroll > elemPos - windowHeight + 30){
+        $(this).addClass('scrollin');
+      }
+    });
+  });
+}); 
+</script>
+<script defer>
+$(function(){
+  $('.carousel').carousel();
+  $('#carousel').on('touchstart', onTouchStart);
+  $('#carousel').on('touchmove', onTouchMove);
+  var direction, position;
+
+  function onTouchStart(event) {
+    position = getPosition(event);
+    direction = ''; 
+  }
+
+  function onTouchMove(event) {
+    if (position - getPosition(event) > 30) { 
+      $('.carousel').carousel('next');
+    } else if (position - getPosition(event) < -30){ 
+      $('.carousel').carousel('prev');
+    }
+  }
+  function getPosition(event) {
+    return event.originalEvent.touches[0].pageX;
+  }
+});
+</script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/object-fit-images/3.2.3/ofi.js" defer></script>
+<script defer>$(function(){objectFitImages();});</script>
+{%endblock%}
