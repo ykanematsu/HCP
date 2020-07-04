@@ -22,8 +22,25 @@
     </section>
     <section id="psq">
       <h1>PSQ水分離膜性能予測</h1>
-      <h2>Comming soon...</h2>
+    <h2><span class="glyphicon glyphicon-check"></span> Enter your SMARTS</h2><br>
+    <form name="form" action="{{url_for('psq',_anchor='psq',_method='POST')}}" method="post" class="m-1 py-2 row">
+    <div class="form-group has-search col-md-6">
+      <span class="fa fa-search form-control-feedback"></span>
+      <input type="search" name="smi" class="form-control" placeholder="{% if smi %}{{smi}}{%else%}Enter SMARTS{%endif%}">
+    </div>
+    </form>
+    {% if lp %}
+    <p>predicted permeance is {{lp}} [10<sup>−13</sup> m<sup>3</sup>/(m<sup>2</sup>·Pa·s)]</p>
+      <p>predicted NaCl rejection rate is {{r}}</p>
+      {{mol|safe}}
+    {% endif %}
       <div class="clearfix"></div>
+      <h3>説明</h3>
+      <ul style="margin-left:1em">
+        <li>分子のSMARTSを与えると逆浸透膜としての性能を予測します。</li>
+        <li>架橋されるケイ素部分を*（アスタリスク）として与えてください。</li>
+        <li>例) *C=C* : エチレン架橋のPSQ水分離膜の性能を計算します。</li>
+      </ul>
     </section>
     <section id="qy">
     <h1>量子収率予測</h1>
@@ -36,12 +53,15 @@
     </form>
     {% if qy %}
       <p>predicted quantum yield is {{qy}}</p>
+      {{mol|safe}}
     {% endif %}
 
       <div class="clearfix"></div>
       <h3>説明</h3>
       <ul style="margin-left:1em">
         <li>量子収率を知りたい分子のSMILESを入力してください。</li>
+        <li>エタノール溶液中での量子収率を予測します。</li>
+        <li>精度が低いので50%を超えるか否かの目安としてみてください。</li>
       </ul>
       <div class="clearfix"></div>
     </section>

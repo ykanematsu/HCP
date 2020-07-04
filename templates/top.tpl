@@ -1,7 +1,7 @@
   <div id="top">
     <header class="fadeintop">
       <div class="bigf">
-        <p style="text-shadow:2px 2px 5px #333;">Hiroshima Chemistry</p>
+        <p style="text-shadow:2px 2px 5px #333;">Hiroshima Chemical Predictor</p>
       </div>
       <div class="clearfix"></div>
       <section class="box">

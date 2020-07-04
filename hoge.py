@@ -9,50 +9,38 @@ import matplotlib.pyplot as plt
 import matplotlib.cm as cm
 import sqlite3
 import cgitb, math, re
-import rdkit 
-#from sklearn.externals import joblib
-import joblib
-from sklearn import linear_model,cross_decomposition
-from sklearn.model_selection import cross_val_score,cross_val_predict
-from scipy.stats import binom_test
 from rdkit import Chem
-from rdkit import DataStructs
-from rdkit.Chem.Descriptors import *
-#from rdkit.Chem.rdMolDescriptors import BCUT2D
-from rdkit.Chem import AllChem, rdPartialCharges
-import openpyxl
-from sklearn.metrics import mean_squared_error,r2_score
-from sklearn.gaussian_process import kernels as sk_kern
-from sklearn.gaussian_process.kernels import ConstantKernel as C
-from sklearn.gaussian_process import GaussianProcessRegressor as GPR
-from sklearn.feature_selection import SelectKBest, f_regression
-from rdkit.Avalon import pyAvalonTools
-
-
-gp=joblib.load('gpr200703')
-def predicter(smis,solv=None,return_std=False):
-    if type(smis) is str: smis=[smis]
-    ms=[Chem.MolFromSmiles(s) for s in smis]
-    fp = [pyAvalonTools.GetAvalonFP(m) for m in ms]
-    if not solv: solv=np.outer(np.ones(len(smis)),[1,0,0])
-    x = np.hstack([fp,solv])
-    return gp.predict(x,return_std=return_std)
-
+import pred
 app = Flask(__name__)
 app.secret_key='HUHU9'
 
-@app.route('/', methods=['GET', 'POST'])
+@app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route('/go', methods=['GET', 'POST'])
-def qy():
+@app.route('/psq', methods=['GET', 'POST'])
+def psq():
     smi=request.form["smi"]
     try:
-        qy=round(predicter(smi)[0],2)
+        lp,r=pred.psq(smi)
+        mol=Chem.MolFromSmiles(smi)
+    except:
+        lp='Not available!'
+        r='Not available!'
+        mol=''
+    return render_template('index.html',smi=smi,lp=lp,r=r,mol=mol)
+
+@app.route('/qy', methods=['GET', 'POST'])
+def qy():
+    smi=request.form["smi"]
+    print(smi)
+    try:
+        qy=round(pred.qy(smi)[0],3)
+        mol=Chem.MolFromSmiles(smi)
     except:
         qy='Not available!'
-    return render_template('index.html',smi=smi,qy=qy)
+        mol=''
+    return render_template('index.html',smi=smi,qy=qy,mol=mol)
 @app.route('/<string:page>/')
 def render_static(page):
     return render_template('%s.html' % page,title=page)
