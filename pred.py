@@ -1,6 +1,7 @@
 import rdkit 
 #from sklearn.externals import joblib
 import joblib
+import sqlite3
 import numpy as np
 import pandas as pd
 from sklearn import linear_model,cross_decomposition
@@ -37,6 +38,7 @@ class psq():
             smi_c=sma.replace('([R])','').replace('[R]','').replace('([*])','').replace('[*]','').replace('(*)','').replace('*','')
             smi_r=sma.replace('([R])','C').replace('[R]','C').replace('([*])','C').replace('[*]','C').replace('(*)','C').replace('*','C')
             morg=Chem.MolFromSmarts(sma)
+            self.smi=sma
             self.mol=Chem.MolFromSmiles(sma)
             mrot=Chem.MolFromSmiles(smi_r)
             m=Chem.MolFromSmiles(smi_c)
@@ -58,6 +60,30 @@ class psq():
             self.Lp='Not available!'
             self.R='Not available!'
             self.mol=''
+    def submit(self):
+        if not self.mol: return
+        Lp=self.Lp
+        R=self.R
+        smi=self.smi
+        crit= 8.5-6.5/0.04*(R-0.95)-0.5
+#        print(Lp,crit)
+        if Lp < crit and R<60: return
+        con = sqlite3.connect('rank.db')
+        c = con.cursor()
+        smis=c.execute('select smiles from psq').fetchall()
+        for s in smis:
+            if s[0]==smi: return
+        c.execute('insert into psq(smiles,Lp,R) values(?,?,?)',(smi,Lp,R))
+        con.commit()
+        con.close()
+
+def rank():
+    con = sqlite3.connect('rank.db')
+    con.row_factory = sqlite3.Row
+    c = con.cursor()
+    sqls=c.execute('select smiles,Lp,R from psq order by Lp desc limit 10').fetchall()
+    con.close()
+    return sqls
 
 def qy(smis,solv=None,return_std=False):
     if type(smis) is str: smis=[smis]
@@ -67,4 +93,5 @@ def qy(smis,solv=None,return_std=False):
     x = np.hstack([fp,solv])
     return gp.predict(x,return_std=return_std)
 if __name__=='__main__':
-    print(psq('*CC*'))
+    test=psq('*C#CC1=CN=C(C=N1)C#C*')
+    test.submit()

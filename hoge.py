@@ -23,8 +23,10 @@ def psq():
     if request.method == 'GET': return redirect(url_for("index"))
     smi=request.form["smi"]
     ppsq=pred.psq(smi)
+    ppsq.submit()
     mol=Chem.MolFromSmiles(smi)
-    return render_template('index.html',smi=smi,ppsq=ppsq)
+    sqls=pred.rank()
+    return render_template('index.html',smi=smi,ppsq=ppsq,sqls=sqls)
 
 @app.route('/qy', methods=['GET', 'POST'])
 def qy():

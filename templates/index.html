@@ -30,9 +30,10 @@
     </div>
     </form>
     {% if ppsq %}
-    <p>predicted permeance is {{ppsq.Lp}} [10<sup>−13</sup> m<sup>3</sup>/(m<sup>2</sup>·Pa·s)]</p>
-      <p>predicted NaCl rejection rate is {{ppsq.R}}</p>
-    <dic class="row">
+    <p>predicted permeance (Lp) is {{ppsq.Lp}} [10<sup>−13</sup> m<sup>3</sup>/(m<sup>2</sup>·Pa·s)]</p>
+      <p>predicted NaCl rejection rate (R) is {{ppsq.R}}</p>
+    {% if ppsq.mol %}
+    <div class="row">
     <div class="form-group has-search col-sm-5">
       <h3> structure</h3><br>
       {{ppsq.mol|safe}}
@@ -52,9 +53,30 @@
       </table>
       {% endif %}
     </div>
+    </div>
+    {% endif %}
 
     {% endif %}
       <div class="clearfix"></div>
+    {% if sqls %}
+    <h3>molecules with high performance</h3>
+    {% set keys =sqls.0.keys() %} 
+    <table class="table">
+    <tr>
+    {% for k in keys%}
+      <th>{{k}}</th>
+    {% endfor %}
+    </tr>
+    {% for s in sqls%}
+    <tr>
+    {% for k in s %}
+    <td>{{k}}</td>
+    {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
+
+    {% endif %}
       <h3>説明</h3>
       <ul style="margin-left:1em">
         <li>架橋分子のSMILESを与えると逆浸透膜としての性能を予測します。</li>
