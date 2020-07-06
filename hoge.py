@@ -50,7 +50,15 @@ def favicon():
     return('', 204)
 
 if __name__ == '__main__':
+    from os import getenv
     app.debug = True
-    host = socket.gethostname()
-#    app.run(host='localhost',port=8090)
-    app.run(host='165.242.106.75',port=8090)
+    host = getenv('HHost')
+    port = getenv('HPort')
+    if port and host:
+        try:
+            app.run(host=host,port=port)
+        except:
+            host=socket.gethostname()
+            app.run(host=host,port=port)
+    else:
+        app.run()
