@@ -20,6 +20,7 @@ def index():
 
 @app.route('/psq', methods=['GET', 'POST'])
 def psq():
+    if request.method == 'GET': return redirect(url_for("index"))
     smi=request.form["smi"]
     ppsq=pred.psq(smi)
     mol=Chem.MolFromSmiles(smi)
@@ -27,6 +28,7 @@ def psq():
 
 @app.route('/qy', methods=['GET', 'POST'])
 def qy():
+    if request.method == 'GET': return redirect(url_for("index"))
     smi=request.form["smi"]
     print(smi)
     try:

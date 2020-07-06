@@ -250,7 +250,7 @@
     }
     .dropdown-menu{background:#000;}
     .dropdown:hover .dropdown-menu{display: block;}
-    .bigf { font-size:3.5em; }
+    .bigf { font-size:3.0em; }
     .dl-horizontal dt {width:200px;}
     .dl-horizontal dd {margin-left:200px;}
     .dl2 dt {width:290px}
