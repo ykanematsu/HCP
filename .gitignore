@@ -4,5 +4,6 @@ __pycache__
 *.bk
 *.pyc
 *.ipynb
+.ipynb_checkpoints
 !.gitkeep
 *~

@@ -21,14 +21,9 @@ def index():
 @app.route('/psq', methods=['GET', 'POST'])
 def psq():
     smi=request.form["smi"]
-    try:
-        lp,r=pred.psq(smi)
-        mol=Chem.MolFromSmiles(smi)
-    except:
-        lp='Not available!'
-        r='Not available!'
-        mol=''
-    return render_template('index.html',smi=smi,lp=lp,r=r,mol=mol)
+    ppsq=pred.psq(smi)
+    mol=Chem.MolFromSmiles(smi)
+    return render_template('index.html',smi=smi,ppsq=ppsq)
 
 @app.route('/qy', methods=['GET', 'POST'])
 def qy():
