@@ -67,7 +67,7 @@ class psq():
         smi=self.smi
         crit= 8.5-6.5/0.04*(R-0.95)-0.5
 #        print(Lp,crit)
-        if Lp < crit and R<60: return
+        if Lp < crit and R<0.3: return
         con = sqlite3.connect('rank.db')
         c = con.cursor()
         smis=c.execute('select smiles from psq').fetchall()
