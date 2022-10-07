@@ -11,7 +11,6 @@ from rdkit import DataStructs
 from rdkit.Chem.Descriptors import *
 #from rdkit.Chem.rdMolDescriptors import BCUT2D
 from rdkit.Chem import AllChem, rdPartialCharges
-import openpyxl
 from sklearn.metrics import mean_squared_error,r2_score
 from sklearn.gaussian_process import kernels as sk_kern
 from sklearn.gaussian_process.kernels import ConstantKernel as C
