@@ -2,6 +2,10 @@ version: "3"
 services:
   web:
     platform: linux/x86_64
+    volumes:
+      - type: bind
+        source: "./"
+        target: "/work"
     build: .
     ports:
       - "${HPort:-9000}:5000"
