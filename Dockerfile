@@ -24,7 +24,8 @@ RUN conda install conda && \
 #conda install --file conda_requirements.txt
 conda install -c conda-forge rdkit lightgbm shap gunicorn && \
 conda install -c bioconda pubchempy && \
-conda install numpy pandas flask scikit-learn
+conda install numpy pandas flask scikit-learn && \
+conda clean -i -t -y
 ##conda install -c rdkit -c mordred-descriptor mordred && \
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
