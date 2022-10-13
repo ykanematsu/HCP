@@ -1,0 +1,26 @@
+    <p>predicted permeance (Lp) is {{ppsq.Lp}} [10<sup>−13</sup> m<sup>3</sup>/(m<sup>2</sup>·Pa·s)]</p>
+      <p>predicted NaCl rejection rate (R) is {{ppsq.R}}</p>
+    {% if ppsq.mol %}
+    <div class="row">
+    <div class="form-group has-search col-sm-5">
+      <h3> structure</h3><br>
+      {{ppsq.mol|safe}}
+    </div>
+    <div class="form-group has-search col-sm-7">
+      <h3> features for permeance</h3>
+      {% if 'Lp_coef' in ppsq.__dict__ %}
+      <table class="table">
+      <tr>
+          <th>feature</th><th>value</th><th>(coef)</th>
+      </tr>
+      {% for i in ppsq.X_Lp.index %}
+      <tr>
+          <td>{{i}}</td><td>{{ppsq.X_Lp[i]}}</td><td>({{'%0.4f' %ppsq.Lp_coef[loop.index0]|float}})</td>
+      <tr>
+      {% endfor%}
+      </table>
+      {% endif %}
+    </div>
+    </div>
+    {% endif %}
+

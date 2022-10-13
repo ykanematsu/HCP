@@ -20,41 +20,15 @@
     <section id="psq">
       <h1>PSQ水分離膜性能予測</h1>
     <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
-    <form name="form" action="{{url_for('psq',_anchor='psq',_method='POST')}}" method="post" class="m-1 py-2 row">
+    <form data-for="#psq_result" name="form" action="{{url_for('psq',_method='POST')}}" method="post" class="m-1 py-2 row">
     <div class="form-group has-search col-12">
       <span class="fa fa-search form-control-feedback"></span>
-      <input type="search" name="smi" class="form-control" {% if smi and ppsq %}value="{{smi}}"{%endif%} placeholder="Enter SMILES">
+      <input type="search" name="smi" class="form-control"  placeholder="Enter SMILES">
     </div>
     </form>
-    {% if ppsq %}
-    <p>predicted permeance (Lp) is {{ppsq.Lp}} [10<sup>−13</sup> m<sup>3</sup>/(m<sup>2</sup>·Pa·s)]</p>
-      <p>predicted NaCl rejection rate (R) is {{ppsq.R}}</p>
-    {% if ppsq.mol %}
-    <div class="row">
-    <div class="form-group has-search col-sm-5">
-      <h3> structure</h3><br>
-      {{ppsq.mol|safe}}
-    </div>
-    <div class="form-group has-search col-sm-7">
-      <h3> features for permeance</h3>
-      {% if 'Lp_coef' in ppsq.__dict__ %}
-      <table class="table">
-      <tr>
-          <th>feature</th><th>value</th><th>(coef)</th>
-      </tr>
-      {% for i in ppsq.X_Lp.index %}
-      <tr>
-          <td>{{i}}</td><td>{{ppsq.X_Lp[i]}}</td><td>({{'%0.4f' %ppsq.Lp_coef[loop.index0]|float}})</td>
-      <tr>
-      {% endfor%}
-      </table>
-      {% endif %}
-    </div>
-    </div>
-    {% endif %}
+    <div id="psq_result"></div>
 
-    {% endif %}
-      <div class="clearfix"></div>
+    <div class="clearfix"></div>
     {% if sqls %}
     <h3>molecules with high performance</h3>
     {% set keys =sqls.0.keys() %} 
@@ -86,16 +60,13 @@
     <section id="qy">
     <h1>量子収率予測</h1>
     <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
-    <form name="form" action="{{url_for('qy',_anchor='qy',_method='POST')}}" method="post" class="m-1 py-2 row">
+    <form data-for="#qy_result" name="form" action="{{url_for('qy',_method='POST')}}" method="post" class="m-1 py-2 row">
     <div class="form-group has-search col-12">
       <span class="fa fa-search form-control-feedback"></span>
-      <input type="search" name="smi" class="form-control" {% if smi and qy %}value="{{smi}}"{%endif%} placeholder="Enter SMILES">
+      <input type="search" name="smi" class="form-control" placeholder="Enter SMILES">
     </div>
     </form>
-    {% if qy %}
-      <p>predicted quantum yield is {{qy}}</p>
-      {{mol|safe}}
-    {% endif %}
+    <div id="qy_result"></div>
 
       <div class="clearfix"></div>
       <h3>説明</h3><br>
@@ -232,6 +203,22 @@ $(function(){
   $('.carousel').carousel();
   $('#carousel').on('touchstart', onTouchStart);
   $('#carousel').on('touchmove', onTouchMove);
+  $('form').on('submit',function(e){
+    e.preventDefault();
+    var url = $(this).attr('action');
+    var targ = $(this).data('for');
+    console.log(targ);
+    var $form = $(this);
+    $(targ).html("<div class='adjust'><div class='loader'></div></div>");
+    $.ajax({
+      type : 'POST',
+      data : $form.serialize(),
+      dataType: 'html',
+      url  :  url
+    }).done(function(data, textStatus, jqXHR) {
+      $(targ).html(data);
+    });
+   });
   var direction, position;
 
   function onTouchStart(event) {

@@ -3,6 +3,7 @@
 import datetime
 import socket
 from flask import Flask, render_template, request, redirect, url_for, Markup, abort, session
+from jinja2 import TemplateNotFound
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -18,19 +19,17 @@ app.secret_key='HUHU9'
 def index():
     return render_template('index.html')
 
-@app.route('/psq', methods=['GET', 'POST'])
+@app.post('/psq')
 def psq():
-    if request.method == 'GET': return redirect(url_for("index"))
     smi=request.form["smi"]
     ppsq=pred.psq(smi)
     ppsq.submit()
     mol=Chem.MolFromSmiles(smi)
     sqls=pred.rank()
-    return render_template('index.html',smi=smi,ppsq=ppsq,sqls=sqls)
+    return render_template('psq.htm',smi=smi,ppsq=ppsq,sqls=sqls)
 
-@app.route('/qy', methods=['GET', 'POST'])
+@app.post('/qy')
 def qy():
-    if request.method == 'GET': return redirect(url_for("index"))
     smi=request.form["smi"]
     print(smi)
     try:
@@ -39,14 +38,13 @@ def qy():
     except:
         qy='Not available!'
         mol=''
-    return render_template('index.html',smi=smi,qy=qy,mol=mol)
-@app.route('/<string:page>/')
+    return render_template('qy.htm',smi=smi,qy=qy,mol=mol)
+@app.route('/<string:page>')
 def render_static(page):
-    return render_template('%s.html' % page,title=page)
-
-@app.route('/favicon.ico/',methods=['GET'])
-def favicon():
-    return('', 204)
+    try:
+      return render_template('%s.html' % page,title=page)
+    except TemplateNotFound:
+      abort(404)
 
 if __name__ == '__main__':
     from os import getenv
