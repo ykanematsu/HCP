@@ -29,5 +29,6 @@ conda clean -i -t -y
 ##conda install -c rdkit -c mordred-descriptor mordred && \
 ENV FLASK_APP=app.py
 ENV FLASK_RUN_HOST=0.0.0.0
+ENV FLASK_ENV=development
 EXPOSE 5000
 CMD ["flask", "run"]

@@ -21,8 +21,12 @@
       <h1>PSQ水分離膜性能予測</h1>
     <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
     <form data-for="#psq_result" name="form" action="{{url_for('psq',_method='POST')}}" method="post" class="m-1 py-2 row">
-    <div class="form-group has-search col-12">
+    <div class="form-group">
+     <div class="input-group mb-3">
       <input type="search" name="smi" class="form-control"  placeholder="Enter SMILES">
+      <span class="input-group-text" id="basic-addon2"><a type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#smilesModal"><i class="bi bi-pencil-square"></i> Open Editor</a></span>
+      <button class="btn btn-outline-light" type="submit">Go</button>
+     </div>
     </div>
     </form>
     <div id="psq_result"></div>
@@ -31,7 +35,7 @@
       <h3>説明</h3>
       <ul style="margin-left:1em">
         <li>架橋分子のSMILESを与えると逆浸透膜としての性能を予測します。</li>
-        <li>架橋されるケイ素部分を*（アスタリスク）として与えてください。</li>
+        <li>架橋されるケイ素部分を*（アスタリスク）あるいはx（エックス）で与えてください。</li>
         <li>例) *C=C* : エチレン架橋のPSQ水分離膜の性能を計算します。</li>
         <li>アスタリスクがない場合や、PubChemに登録されていない分子が与えられると、一律で'Not available'となります。</li>
         <li>水浸透率(Lp)と除去率(R)のトレードオフ上限に近い性能の分子はデータベースに登録されます。</li>
@@ -41,9 +45,12 @@
     <h1>量子収率予測</h1>
     <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
     <form data-for="#qy_result" name="form" action="{{url_for('qy',_method='POST')}}" method="post" class="m-1 py-2 row">
-    <div class="form-group has-search col-12">
-      <input type="search" name="smi" class="form-control" placeholder="Enter SMILES">
-    </div>
+     <div class="input-group mb-3">
+      <input name="smi" class="form-control"  placeholder="Enter SMILES">
+      <span class="input-group-text" id="basic-addon2"><a type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#smilesModal"><i class="bi bi-pencil-square"></i> Open Editor</a></span>
+      <button class="btn btn-outline-light" type="submit">Go</button>
+     </div>
+
     </form>
     <div id="qy_result"></div>
 
@@ -63,6 +70,23 @@
         <li><a target="_blank" href="http://www.bio.info.hiroshima-cu.ac.jp">広島市立大学バイオ情報学研究室</a></li>
       </ul>
     </section>
+    <div class="modal fade" id="smilesModal" tabindex="-1" aria-labelledby="smilesModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="smilesModalLabel">Modal title</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+             <div id="jsme_container"></div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button name="smiles" type="button" class="btn btn-primary" data-bs-dismiss="modal">Set SMILES</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <footer class="container-fluid">
     <section>
@@ -80,6 +104,14 @@
   <div class="clearfix"></div>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/jsme-editor@2022.9.26/jsme.nocache.js"></script>
+<script>
+ //this function will be called after the JavaScriptApplet code has been loaded.
+    function jsmeOnLoad() {
+        jsmeApplet = new JSApplet.JSME("jsme_container", "380px", "380px");
+        jsmeApplet.setMenuXShortcuts('Xx');
+   }
+</script>
 <script defer>
 if(!navigator.userAgent.match(/(iPhone|Android)/)){
   $(function() {
@@ -149,6 +181,11 @@ $(function(){
   $('[data-toggle=popover]').popover({
     trigger: 'focus,hover'
   });
+  $('button[name=smiles]').on('click',function(){
+      var smiles = jsmeApplet.smiles()
+      $('input[name="smi"]').val(smiles);
+  });
+
 });
 </script>
 <script defer>
@@ -194,6 +231,11 @@ $(function(){
     }).done(function(data, textStatus, jqXHR) {
       $(targ).html(data);
     });
+   });
+   $('#smilesModal').on('show.bs.modal',function(e){
+    var org = $(e.relatedTarget);
+    jsmeApplet.repaint();
+    jsmeApplet.options('newLook');
    });
   var direction, position;
 

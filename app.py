@@ -21,7 +21,7 @@ def index():
 
 @app.post('/psq')
 def psq():
-    smi=request.form["smi"]
+    smi=request.form["smi"].replace('x','*').replace('X','*')
     ppsq=pred.psq(smi)
     ppsq.submit()
     mol=Chem.MolFromSmiles(smi)
