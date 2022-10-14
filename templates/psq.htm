@@ -9,7 +9,7 @@
     <div class="form-group has-search col-sm-7">
       <h3> features for permeance</h3>
       {% if 'Lp_coef' in ppsq.__dict__ %}
-      <table class="table">
+      <table class="table text-light">
       <tr>
           <th>feature</th><th>value</th><th>(coef)</th>
       </tr>
@@ -23,4 +23,22 @@
     </div>
     </div>
     {% endif %}
+    {% if sqls %}
+    <h3>molecules with high performance</h3>
+    {% set keys =sqls.0.keys() %} 
+    <table class="table text-light">
+    <tr>
+    {% for k in keys%}
+      <th>{{k}}</th>
+    {% endfor %}
+    </tr>
+    {% for s in sqls%}
+    <tr>
+    {% for k in s %}
+    <td>{{k}}</td>
+    {% endfor %}
+    </tr>
+    {% endfor %}
+    </table>
 
+    {% endif %}

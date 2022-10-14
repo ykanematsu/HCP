@@ -10,8 +10,8 @@
         </div>
         <div class="col-lg-5 col-md-6 col-sm-6 hidden-xs">
           <h2><span class="glyphicon glyphicon-info-sign"></span> 新着情報</h2>
-          <dl class="dl-horizontal">
-            <dt >R02.07.03</dt><dd>ホームページを開設しました。</dd>
+          <dl class="row">
+            <dt class="col-sm-4">R02.07.03</dt><dd class="col-sm-8">ホームページを開設しました。</dd>
           </dl>
         </div>
         <div class="clearfix visible-md visible-sm"></div>
@@ -22,32 +22,12 @@
     <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
     <form data-for="#psq_result" name="form" action="{{url_for('psq',_method='POST')}}" method="post" class="m-1 py-2 row">
     <div class="form-group has-search col-12">
-      <span class="fa fa-search form-control-feedback"></span>
       <input type="search" name="smi" class="form-control"  placeholder="Enter SMILES">
     </div>
     </form>
     <div id="psq_result"></div>
 
     <div class="clearfix"></div>
-    {% if sqls %}
-    <h3>molecules with high performance</h3>
-    {% set keys =sqls.0.keys() %} 
-    <table class="table">
-    <tr>
-    {% for k in keys%}
-      <th>{{k}}</th>
-    {% endfor %}
-    </tr>
-    {% for s in sqls%}
-    <tr>
-    {% for k in s %}
-    <td>{{k}}</td>
-    {% endfor %}
-    </tr>
-    {% endfor %}
-    </table>
-
-    {% endif %}
       <h3>説明</h3>
       <ul style="margin-left:1em">
         <li>架橋分子のSMILESを与えると逆浸透膜としての性能を予測します。</li>
@@ -62,7 +42,6 @@
     <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
     <form data-for="#qy_result" name="form" action="{{url_for('qy',_method='POST')}}" method="post" class="m-1 py-2 row">
     <div class="form-group has-search col-12">
-      <span class="fa fa-search form-control-feedback"></span>
       <input type="search" name="smi" class="form-control" placeholder="Enter SMILES">
     </div>
     </form>
@@ -99,8 +78,8 @@
     </section>
   </footer>
   <div class="clearfix"></div>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" defer></script>
+<script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 <script defer>
 if(!navigator.userAgent.match(/(iPhone|Android)/)){
   $(function() {
@@ -178,9 +157,6 @@ if(navigator.userAgent.match(/(iPhone|Android)/)){
     $(".navbar-nav li a").click(function(event) {
     $(".navbar-collapse").collapse('hide');
     });
-    $('.oral').on('touchstart touchend', function() {
-      $('[data-toggle=popover]').popover("hide");
-    });
   });
 };
 </script>
@@ -209,7 +185,7 @@ $(function(){
     var targ = $(this).data('for');
     console.log(targ);
     var $form = $(this);
-    $(targ).html("<div class='adjust'><div class='loader'></div></div>");
+    $(targ).html('<div class="spinner-border text-light" role="status"><span class="visually-hidden">Loading...</span></div>');
     $.ajax({
       type : 'POST',
       data : $form.serialize(),
