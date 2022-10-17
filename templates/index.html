@@ -74,7 +74,7 @@
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="smilesModalLabel">Modal title</h5>
+            <h5 class="modal-title text-dark" id="smilesModalLabel">JSME-editor</h5>
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
@@ -103,16 +103,17 @@
   </footer>
   <div class="clearfix"></div>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsme-editor@2022.9.26/jsme.nocache.js"></script>
 <script>
  //this function will be called after the JavaScriptApplet code has been loaded.
     function jsmeOnLoad() {
-        jsmeApplet = new JSApplet.JSME("jsme_container", "380px", "380px");
+        jsmeApplet = new JSApplet.JSME("jsme_container", "450px", "400px");
         jsmeApplet.setMenuXShortcuts('Xx');
    }
 </script>
 <script defer>
+// fix navbar when it comes top (sticky top)
 if(!navigator.userAgent.match(/(iPhone|Android)/)){
   $(function() {
     var $win = $(window),
@@ -121,13 +122,9 @@ if(!navigator.userAgent.match(/(iPhone|Android)/)){
         navPos = $nav.offset().top,
         fixedClass = 'is-fixed',
         hideClass = 'is-hide';
-    $(".poster").mouseout(function(){
-        docmentHeight = $(document).height();
-    });
     $win.on('load scroll', function() {
       var value = $(this).scrollTop(),
           scrollPos = $win.height() + value;
-
       if ( value > navPos ) {
         if ( (docmentHeight - scrollPos) / scrollPos <= 0.01 ) {
           $nav.addClass(hideClass);
@@ -149,36 +146,39 @@ if(navigator.userAgent.match(/iPad/)){
 $(document).on('touchmove', function(e) {
   if (!$(e.target).closest('.dropdown-menu').length) {
     $('.dropdown-menu').fadeOut();
-    $('[data-toggle=popover]').popover("hide");
+    $('[data-bs-toggle=popover]').popover("hide");
   }
 });
 };
 $(function(){
-  var JMargin = 20;
-  var $drop = $('.dropdown-menu');
-  if(navigator.userAgent.match(/iPad/)){
-    $('a[href^="#"]').on('touchstart',SwJump);
-    $('a[href^="#s"]').on('touchend',function(){
-      $(this).closest('.dropdown-menu').addClass('hide');
-    });
+// smooth jump
+var JMargin = 20;
+var $drop = $('.dropdown-menu');
+if(navigator.userAgent.match(/iPad/)){
+  $('a[href^="#"]').on('touchstart',SwJump);
+  $('a[href^="#s"]').on('touchend',function(){
+    $(this).closest('.dropdown-menu').addClass('hide');
+  });
+}else{
+  $('a[href^="#"]').click(SwJump);
+};
+function SwJump () {
+  $drop.removeClass('hide');
+  var speed = 600,
+      href = $(this).attr("href"),
+      target = $(href == "#" || href == "" ? 'html' : href);
+  if( href.indexOf('#s') === 0){
+      JMargin =60;
   }else{
-    $('a[href^="#"]').click(SwJump);
-  };
-  function SwJump () {
-    $drop.removeClass('hide');
-    var speed = 600,
-        href = $(this).attr("href"),
-        target = $(href == "#" || href == "" ? 'html' : href);
-    if( href.indexOf('#s') === 0){
-        JMargin =60;
-    }else{
-        JMargin =20;
-    }
-    var position = target.offset().top-JMargin;
-    $('body,html').animate({scrollTop:position}, speed, 'swing');
-    return false;
+      JMargin =20;
   }
-  $('[data-toggle=popover]').popover({
+  var position = target.offset().top-JMargin;
+  $('body,html').animate({scrollTop:position}, speed, 'swing');
+  return false;
+}
+
+  // popover
+  $('[data-bs-toggle=popover]').popover({
     trigger: 'focus,hover'
   });
   $('button[name=smiles]').on('click',function(){
@@ -199,16 +199,16 @@ if(navigator.userAgent.match(/(iPhone|Android)/)){
 </script>
 <script defer>
 $(function(){
-  $(window).scroll(function (){
-    $('.fadein').each(function(){
-      var elemPos = $(this).offset().top,
-      scroll = $(window).scrollTop(),
-      windowHeight = $(window).height();
-      if (scroll > elemPos - windowHeight + 30){
-        $(this).addClass('scrollin');
-      }
-    });
-  });
+//  $(window).scroll(function (){
+//    $('.fadein').each(function(){
+//      var elemPos = $(this).offset().top,
+//      scroll = $(window).scrollTop(),
+//      windowHeight = $(window).height();
+//      if (scroll > elemPos - windowHeight + 30){
+//        $(this).addClass('scrollin');
+//      }
+//    });
+//  });
 }); 
 </script>
 <script defer>
@@ -220,7 +220,7 @@ $(function(){
     e.preventDefault();
     var url = $(this).attr('action');
     var targ = $(this).data('for');
-    console.log(targ);
+    //console.log(targ);
     var $form = $(this);
     $(targ).html('<div class="spinner-border text-light" role="status"><span class="visually-hidden">Loading...</span></div>');
     $.ajax({
@@ -237,8 +237,8 @@ $(function(){
     jsmeApplet.repaint();
     jsmeApplet.options('newLook');
    });
-  var direction, position;
 
+  var direction, position;
   function onTouchStart(event) {
     position = getPosition(event);
     direction = ''; 

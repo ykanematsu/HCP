@@ -279,6 +279,11 @@
     #p2 h1 {width:74%;}
 
   }
+/*  section:before {
+    height: 500px;
+    content: "";
+    display:block;
+  } */
 
   /* for smart phone */
   @media screen and (max-width:767px) {

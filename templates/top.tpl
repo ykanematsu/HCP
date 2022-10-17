@@ -32,21 +32,22 @@
         </div>
       </div>
     </header>
-    <div class="nav-dummy">
-      <nav id="nav" class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="nav-dummy sticky-top">
+      <nav id="nav" class="navbar navbar-expand-md navbar-dark bg-dark px-3 mb-3">
         <div class="container-fluid">
            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
            </button>
           <div id="navbarNav" class="navbar-collapse collapse justify-content-center">
-            <ul class="navbar-nav nav">
+            <ul class="nav nav-pills">
               <li><a class="nav-link d-none d-md-block" title="ページトップへ" href="#top"><i class="bi bi-house-fill"></i></a></li>
               <li><a class="nav-link" href="#psq">分離膜</a></li>
               <li><a class="nav-link" href="#qy">量子収率</a></li>
               <li><a class="nav-link" href="#link">リンク</a></li>
-            </div>
+            </ul>
           </div>
         </div>
       </nav>
     </div>
   </div>
+
