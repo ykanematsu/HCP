@@ -55,6 +55,7 @@ class psq():
             self.R=round(sigmoid(lmR.predict(X_R)[0]),3)
             self.Lp_coef=lmLp.coef_
             self.X_Lp=X_Lp[0]
+            self.iupac_name=a.iupac_name
         except:
             self.Lp='Not available!'
             self.R='Not available!'

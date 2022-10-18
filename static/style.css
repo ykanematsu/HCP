@@ -3,11 +3,17 @@
     padding: 0;
     box-sizing: border-box;
   }
+  a.anchor {
+  display: block;
+  height: 70px;
+  margin-top: -70px;
+  }
   body {
     font-size:18px;
     font-family:"Helvetica Neue", Helvetica, Arial,"Tsukushi A Round Gothic", "游ゴシック", "Yu Gothic", YuGothic, "Hiragino Kaku Gothic ProN";
     background: #333;
     color:#fff;
+    position:relative;
   }
   img { max-width:100%; }
   a { color:#87CEFA; }
@@ -28,7 +34,7 @@
     height:52vh;
     font-family: 'object-fit: cover;';
   }
-  #top a{ color:#eee; }
+  #nav a, #top a { color:#eee; }
   .bigf {
     background:linear-gradient(rgba(3,3,3,0.25),rgba(3,3,3,0.0));
     position:absolute;
@@ -86,22 +92,15 @@
     font-size:19px;
   }
 
-  #top {
+  #nav,#top {
     text-align: center;
     font-family: "Tsukushi B Round Gothic","Tsukushi A Round Gothic","筑紫A丸ゴシック","メイリオ";
   }
   section {
     max-width: 1600px;
     min-height: 250px;
-    margin: 0 auto;
+/*    margin: 0 auto;*/
   }
-  .oral { padding-top:5px; }
-  .oral b {font-family:'ヒラギノ角ゴシック','Hiragino Sans'; }
-  .oral dd {
-      margin-bottom:5px;
-      padding-right:2px;
-      font-size:0.9em;
-  }              
   .popover-title{width:100%;}
   svg line, svg polyline { fill:none; }
   .line1 {
@@ -197,14 +196,14 @@
   /* for PC */
   @media (min-width: 768px) {
     #pic0{ background-image:url("img/top.jpg");}
-    #top li a{
+    #nav li a{
       position: relative;
       display: inline-block;
     }
-    #top li a:hover {
+    #nav li a:hover {
         background:none;
     }
-    #top li a.active {
+    #nav li a.active {
         font-weight:bold;
         background:none;
         text-shadow:none;
@@ -215,7 +214,7 @@
     #navbar {
         padding:5px 0px;
     }
-    #top a:before,#top a:after{
+    #nav a:before,#nav a:after{
       position: absolute;
       top: 2.3em;
       content: "";
@@ -225,18 +224,18 @@
       background: #fff;
       transition: 0.5s;
     }
-    #top li a:before{ left: 40%; }
-    #top li a:after{ right: 40%; }
-    #top li a:hover:before, #top li a:hover:after{
+    #nav li a:before{ left: 40%; }
+    #nav li a:after{ right: 40%; }
+    #nav li a:hover:before, #nav li a:hover:after{
       width: 40%;
     }
-    #top li a.active:before,  #top li a.active:after{
+    #nav li a.active:before,  #nav li a.active:after{
       width: 40%;
     }
-    #top li a.drop:hover{text-shadow:0px 0px 5px #fff;}
-    #top li a.drop:focus{background:#000}
-    #top li a:focus{outline:none;}
-    #top li a.drop:before, #top li a.drop:after{
+    #nav li a.drop:hover{text-shadow:0px 0px 5px #fff;}
+    #nav li a.drop:focus{background:#000}
+    #nav li a:focus{outline:none;}
+    #nav li a.drop:before, #nav li a.drop:after{
         content:none;
     }
     .dropdown-menu{background:#000;}
@@ -275,7 +274,6 @@
     }
     .banner a {margin-bottom:5px;text-align:center}
     .banner img {max-height:90px;width:auto;}
-    .ban1 {margin-top:10px;}
     #p2 h1 {width:74%;}
 
   }
@@ -297,7 +295,7 @@
     .title {
         font-size:calc(30% + 3.0vw);
     }
-    #top nav {
+    #nav {
         padding-top:5px;
         position:fixed ;
         top:0;
@@ -312,7 +310,7 @@
     .navbar-header {
         padding-left:10px;
     }
-    #top a{
+    #nav a{
         color:#fff;
     }
     .kakomi-smart2 {
@@ -327,10 +325,5 @@
         text-shadow:0px 0px 1px #000;
     }
     .banner a {padding:5px;text-align:center}
-
-    .ban1 {
-        max-height:80px;
-        width:auto;
-    }
 
   }

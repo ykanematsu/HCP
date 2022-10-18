@@ -1,6 +1,6 @@
 {% extends "layout.tpl" %}
 {% block main %}
-{% include "top.tpl" %}
+<main data-bs-spy="scroll" data-bs-target="#nav" data-bs-root-margin="0px 0px -80%" data-bs-smooth-scroll="false" tabindex="0">
   <div class="container-fluid">
     <section id="gaiyo" class="fadeintop">
       <div class="row">
@@ -17,8 +17,9 @@
         <div class="clearfix visible-md visible-sm"></div>
       </div>
     </section>
-    <section id="psq">
-      <h1>PSQ水分離膜性能予測</h1>
+    <section>
+    <a class="anchor" id="psq"></a>
+    <h1>PSQ水分離膜性能予測</h1>
     <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
     <form data-for="#psq_result" name="form" action="{{url_for('psq',_method='POST')}}" method="post" class="m-1 py-2 row">
     <div class="form-group">
@@ -30,7 +31,6 @@
     </div>
     </form>
     <div id="psq_result"></div>
-
     <div class="clearfix"></div>
       <h3>説明</h3>
       <ul style="margin-left:1em">
@@ -41,7 +41,8 @@
         <li>水浸透率(Lp)と除去率(R)のトレードオフ上限に近い性能の分子はデータベースに登録されます。</li>
       </ul>
     </section>
-    <section id="qy">
+    <section>
+    <a class="anchor" id="qy"></a>
     <h1>量子収率予測</h1>
     <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
     <form data-for="#qy_result" name="form" action="{{url_for('qy',_method='POST')}}" method="post" class="m-1 py-2 row">
@@ -63,7 +64,8 @@
       </ul>
       <div class="clearfix"></div>
     </section>
-    <section id="link">
+    <section>
+      <a class="anchor" id="link"></a>
       <h1>リンク</h1>
       <ul style="margin-left:1em">
         <li><a target="_blank" href="https://home.hiroshima-u.ac.jp/orgmtrls/Ohshita_Group/Ohshita_Group-Home.html">広島大学有機元素材料化学研究室</a></li>
@@ -88,20 +90,21 @@
       </div>
     </div>
   </div>
-  <footer class="container-fluid">
-    <section>
-      <div class="row">
-        <div class="col-xs-12 col-sm-6">
-        </div>
-        <div class="pull-right col-xs-12 col-sm-6">
-          <span class="glyphicon glyphicon-copyright-mark"></span> 2020 Hiroshima Chemistry Group<br>
-          <p>ページ上部写真提供：広島県</p>
-          <a href="#" title="ページトップへ"><span style="font-size:60px;" class="glyphicon glyphicon-collapse-up hidden-xs"></span></a>
-        </div>
+</main>
+<footer class="container-fluid">
+  <section>
+    <div class="row">
+      <div class="col-xs-12 col-sm-6">
       </div>
-    </section>
-  </footer>
-  <div class="clearfix"></div>
+      <div class="pull-right col-xs-12 col-sm-6">
+        <span class="glyphicon glyphicon-copyright-mark"></span> 2020 Hiroshima Chemistry Group<br>
+        <p>ページ上部写真提供：広島県</p>
+        <a href="#" title="ページトップへ"><span style="font-size:60px;" class="glyphicon glyphicon-collapse-up hidden-xs"></span></a>
+      </div>
+    </div>
+  </section>
+</footer>
+<div class="clearfix"></div>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous"></script>
 <script src="https://cdn.jsdelivr.net/npm/jsme-editor@2022.9.26/jsme.nocache.js"></script>
@@ -113,14 +116,14 @@
    }
 </script>
 <script defer>
-// fix navbar when it comes top (sticky top)
+// sticky navbar hide when it comes bottom 
 if(!navigator.userAgent.match(/(iPhone|Android)/)){
   $(function() {
     var $win = $(window),
-        $nav = $('nav'),
+        $nav = $('#nav'),
         docmentHeight = $(document).height(),
         navPos = $nav.offset().top,
-        fixedClass = 'is-fixed',
+        fixedClass = 'sticky-top',
         hideClass = 'is-hide';
     $win.on('load scroll', function() {
       var value = $(this).scrollTop(),
@@ -151,31 +154,31 @@ $(document).on('touchmove', function(e) {
 });
 };
 $(function(){
-// smooth jump
-var JMargin = 20;
-var $drop = $('.dropdown-menu');
-if(navigator.userAgent.match(/iPad/)){
-  $('a[href^="#"]').on('touchstart',SwJump);
-  $('a[href^="#s"]').on('touchend',function(){
-    $(this).closest('.dropdown-menu').addClass('hide');
-  });
-}else{
-  $('a[href^="#"]').click(SwJump);
-};
-function SwJump () {
-  $drop.removeClass('hide');
-  var speed = 600,
-      href = $(this).attr("href"),
-      target = $(href == "#" || href == "" ? 'html' : href);
-  if( href.indexOf('#s') === 0){
-      JMargin =60;
-  }else{
-      JMargin =20;
-  }
-  var position = target.offset().top-JMargin;
-  $('body,html').animate({scrollTop:position}, speed, 'swing');
-  return false;
-}
+// // smooth jump
+// var JMargin = 20;
+// var $drop = $('.dropdown-menu');
+// if(navigator.userAgent.match(/iPad/)){
+//   $('a[href^="#"]').on('touchstart',SwJump);
+//   $('a[href^="#s"]').on('touchend',function(){
+//     $(this).closest('.dropdown-menu').addClass('hide');
+//   });
+// }else{
+//   $('a[href^="#"]').click(SwJump);
+// };
+// function SwJump () {
+//   $drop.removeClass('hide');
+//   var speed = 600,
+//       href = $(this).attr("href"),
+//       target = $(href == "#" || href == "" ? 'html' : href);
+//   if( href.indexOf('#s') === 0){
+//       JMargin =60;
+//   }else{
+//       JMargin =20;
+//   }
+//   var position = target.offset().top-JMargin;
+//   $('body,html').animate({scrollTop:position}, speed, 'swing');
+//   return false;
+// }
 
   // popover
   $('[data-bs-toggle=popover]').popover({
@@ -190,9 +193,9 @@ function SwJump () {
 </script>
 <script defer>
 if(navigator.userAgent.match(/(iPhone|Android)/)){
-  $(document).ready(function () {
-    $(".navbar-nav li a").click(function(event) {
-    $(".navbar-collapse").collapse('hide');
+  $(function () {
+    $("#nav li a").click(function(event) {
+      $(".navbar-collapse").collapse('hide');
     });
   });
 };

@@ -9,9 +9,8 @@
 
   <link href="{{ url_for('static',filename='style.css') }}" rel="stylesheet" type="text/css" media="screen">
 </head>
-<body data-bs-spy="scroll" data-bs-target="#nav" data-bs-root-margin="0px 0px -80% 0px">
-    <main>
+<body>
+    {% include "top.tpl" %}
     {% block main %}{% endblock %}
-    </main>
 </body>
 </html>
