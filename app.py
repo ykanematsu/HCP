@@ -21,7 +21,7 @@ def index():
 
 @app.post('/psq')
 def psq():
-    smi=request.form["smi"].replace('x','*').replace('X','*')
+    smi=request.form["smi"].replace('R','*')
     ppsq=pred.psq(smi)
     ppsq.submit()
     mol=Chem.MolFromSmiles(smi)
@@ -30,7 +30,7 @@ def psq():
 
 @app.post('/qy')
 def qy():
-    smi=request.form["smi"]
+    smi=request.form["smi"].replace('*','R').replace('([R])','').replace('[R]','').replace('R','')
     print(smi)
     try:
         qy=round(pred.qy(smi)[0],3)

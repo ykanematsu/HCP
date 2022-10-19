@@ -35,7 +35,7 @@
       <h3>説明</h3>
       <ul style="margin-left:1em">
         <li>架橋分子のSMILESを与えると逆浸透膜としての性能を予測します。</li>
-        <li>架橋されるケイ素部分を*（アスタリスク）あるいはx（エックス）で与えてください。</li>
+        <li>架橋されるケイ素部分を*（アスタリスク）あるいは[R]で与えてください。</li>
         <li>例) *C=C* : エチレン架橋のPSQ水分離膜の性能を計算します。</li>
         <li>アスタリスクがない場合や、PubChemに登録されていない分子が与えられると、一律で'Not available'となります。</li>
         <li>水浸透率(Lp)と除去率(R)のトレードオフ上限に近い性能の分子はデータベースに登録されます。</li>
@@ -80,7 +80,8 @@
             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
           </div>
           <div class="modal-body">
-             <div id="jsme_container"></div>
+             <div id="jsme_container">
+             </div>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
@@ -111,7 +112,7 @@
 <script>
  //this function will be called after the JavaScriptApplet code has been loaded.
     function jsmeOnLoad() {
-        jsmeApplet = new JSApplet.JSME("jsme_container", "450px", "400px");
+        jsmeApplet = new JSApplet.JSME("jsme_container", "450px", "400px",{"options": "query,rbutton"});
         jsmeApplet.setMenuXShortcuts('Xx');
    }
 </script>
