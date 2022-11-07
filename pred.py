@@ -37,10 +37,11 @@ class psq():
             smi_c=sma.replace('([R])','').replace('[R]','').replace('([*])','').replace('[*]','').replace('(*)','').replace('*','')
             smi_r=sma.replace('([R])','C').replace('[R]','C').replace('([*])','C').replace('[*]','C').replace('(*)','C').replace('*','C')
             morg=Chem.MolFromSmarts(sma)
-            self.smi=sma
+            m=Chem.MolFromSmiles(smi_c)
+            canonical_smiles=Chem.MolToSmiles(m)
+            self.smi=canonical_smiles
             self.mol=Chem.MolFromSmiles(sma)
             mrot=Chem.MolFromSmiles(smi_r)
-            m=Chem.MolFromSmiles(smi_c)
             si=[at.GetIdx() for at in morg.GetAtoms() if at.GetSymbol()=='*']
             tmp=pd.Series(dtype='float64')
             tmp['nbridge']=len(Chem.rdmolops.GetShortestPath(morg,si[0],si[1]))-1
@@ -69,10 +70,10 @@ class psq():
 #        print(Lp,crit)
         if Lp < crit and R<0.3: return
         con = sqlite3.connect('rank.db')
+        con.row_factory = lambda cursor, row: row[0]
         c = con.cursor()
         smis=c.execute('select smiles from psq').fetchall()
-        for s in smis:
-            if s[0]==smi: return
+        if smi in smis: return
         c.execute('insert into psq(smiles,Lp,R) values(?,?,?)',(smi,Lp,R))
         con.commit()
         con.close()
@@ -81,9 +82,20 @@ def rank():
     con = sqlite3.connect('rank.db')
     con.row_factory = sqlite3.Row
     c = con.cursor()
-    sqls=c.execute('select smiles,Lp,R from psq order by Lp desc limit 10').fetchall()
+    sqls=c.execute('select distinct smiles,Lp,R from psq order by (Lp*R) desc limit 10').fetchall()
     con.close()
     return sqls
+
+def clean_rank():
+    con = sqlite3.connect('rank.db')
+    con.row_factory = sqlite3.Row
+    df=pd.read_sql_query('select * from psq',con,index_col="id")
+    canon_smis=list(map(Chem.MolToSmiles,map(Chem.MolFromSmiles,df.smiles)))
+    df.smiles=canon_smis
+    df=df.drop_duplicates(subset='smiles',ignore_index=True)
+    df.to_sql('psq',con,index=False,if_exists="replace")
+    con.close()
+    return
 
 def qy(smis,solv=None,return_std=False):
     if type(smis) is str: smis=[smis]
@@ -93,5 +105,6 @@ def qy(smis,solv=None,return_std=False):
     x = np.hstack([fp,solv])
     return gp.predict(x,return_std=return_std)
 if __name__=='__main__':
-    test=psq('*C#CC1=CN=C(C=N1)C#C*')
-    test.submit()
+    clean_rank()
+#    test=psq('*C#CC1=CN=C(C=N1)C#C*')
+#    test.submit()
