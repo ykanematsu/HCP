@@ -5,13 +5,14 @@
     <section id="gaiyo" class="fadeintop">
       <div class="row">
         <div class="col-lg-4 col-md-6 col-sm-6 col-xs-12">
-          <h2><span class="glyphicon glyphicon-th-list"></span> 概要</h2>
-          <p>計算・情報・有機化学の連携により生命・材料科学分野における諸問題の解決を目指します。</p>
+          <h2><span class="glyphicon glyphicon-th-list"></span> About us</h2>
+          <p>We aim to solve various problems in the fields of biochemical and materials science through collaboration among computation, information, and organic chemistry.</p>
         </div>
         <div class="col-lg-5 col-md-6 col-sm-6 hidden-xs">
-          <h2><span class="glyphicon glyphicon-info-sign"></span> 新着情報</h2>
+          <h2><span class="glyphicon glyphicon-info-sign"></span> New Feature</h2>
           <dl class="row">
-            <dt class="col-sm-4">R02.07.03</dt><dd class="col-sm-8">ホームページを開設しました。</dd>
+            <dt class="col-sm-4">2020.07.03</dt><dd class="col-sm-8">Website opened.</dd>
+            <dt class="col-sm-4">2024.05.10</dt><dd class="col-sm-8">Updated.</dd>
           </dl>
         </div>
         <div class="clearfix visible-md visible-sm"></div>
@@ -19,9 +20,9 @@
     </section>
     <section>
     <a class="anchor" id="psq"></a>
-    <h1>PSQ水分離膜性能予測</h1>
+    <h1>Performance prediction for PSQ-based RO membrance</h1>
     <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
-    <form data-for="#psq_result" name="form" action="{{url_for('psq',_method='POST')}}" method="post" class="m-1 py-2 row">
+    <form data-for="#psq_result" name="form" action="{{url_for('psq',_method='POST')}}" method="post" class="m-1 py-2 row" enctype="multipart/form-data">
     <div class="form-group">
      <div class="input-group mb-3">
       <input type="search" name="smi" class="form-control"  placeholder="Enter SMILES">
@@ -32,20 +33,20 @@
     </form>
     <div id="psq_result"></div>
     <div class="clearfix"></div>
-      <h3>説明</h3>
+      <h3>Details</h3>
       <ul style="margin-left:1em">
-        <li>架橋分子のSMILESを与えると逆浸透膜としての性能を予測します。</li>
-        <li>架橋されるケイ素部分を*（アスタリスク）あるいは[R]で与えてください。</li>
-        <li>例) *C=C* : エチレン架橋のPSQ水分離膜の性能を計算します。</li>
-        <li>アスタリスクがない場合や、PubChemに登録されていない分子が与えられると、一律で'Not available'となります。</li>
-        <li>水浸透率(Lp)と除去率(R)のトレードオフ上限に近い性能の分子はデータベースに登録されます。</li>
+        <li>Given the SMILES of the cross-linker molecule, it predicts the performance as a reverse osmosis membrane.</li>
+        <li>Set asterisk or [R] to the linking positions of the molecule, as the following example.</li>
+        <li>When specifying "*C=C*", the performance of the ethylene-linked PSQ membrane is predicted.</li>
+        <li>If no linking position specified, or if the specified molecule not registered in PubChem database, it will be uniformly marked 'Not available'.</li>
+        <li>Molecules whose performance is close to the upper trade-off limit between water permeance  (Lp) and removal rate (R) are registered into the database on this website.</li>
       </ul>
     </section>
     <section>
     <a class="anchor" id="qy"></a>
-    <h1>量子収率予測</h1>
+    <h1>Prediction of Quantum yield</h1>
     <h2><span class="glyphicon glyphicon-check"></span> Enter your SMILES</h2><br>
-    <form data-for="#qy_result" name="form" action="{{url_for('qy',_method='POST')}}" method="post" class="m-1 py-2 row">
+    <form data-for="#qy_result" name="form" action="{{url_for('qy',_method='POST')}}" method="post" class="m-1 py-2 row" enctype="multipart/form-data" >
      <div class="input-group mb-3">
       <input name="smi" class="form-control"  placeholder="Enter SMILES">
       <span class="input-group-text" id="basic-addon2"><a type="button" class="btn btn-link" data-bs-toggle="modal" data-bs-target="#smilesModal"><i class="bi bi-pencil-square"></i> Open Editor</a></span>
@@ -56,17 +57,15 @@
     <div id="qy_result"></div>
 
       <div class="clearfix"></div>
-      <h3>説明</h3><br>
+      <h3>Details</h3><br>
       <ul style="margin-left:1em">
-        <li>量子収率を知りたい分子のSMILESを入力してください。</li>
-        <li>エタノール溶液中での量子収率を予測します。</li>
-        <li>精度が低いので50%を超えるか否かの目安としてみてください。</li>
+        <li>Enter SMILES to predict the molecular quantum yield</li>
       </ul>
       <div class="clearfix"></div>
     </section>
     <section>
       <a class="anchor" id="link"></a>
-      <h1>リンク</h1>
+      <h1>Links</h1>
       <ul style="margin-left:1em">
         <li><a target="_blank" href="https://home.hiroshima-u.ac.jp/orgmtrls/Ohshita_Group/Ohshita_Group-Home.html">広島大学有機元素材料化学研究室</a></li>
         <li><a target="_blank" href="http://www.bio.info.hiroshima-cu.ac.jp">広島市立大学バイオ情報学研究室</a></li>
@@ -229,7 +228,10 @@ $(function(){
     $(targ).html('<div class="spinner-border text-light" role="status"><span class="visually-hidden">Loading...</span></div>');
     $.ajax({
       type : 'POST',
-      data : $form.serialize(),
+      //data : $form.serialize(),
+      data : new FormData(this),
+      processData : false,
+      contentType : false,
       dataType: 'html',
       url  :  url
     }).done(function(data, textStatus, jqXHR) {

@@ -14,19 +14,19 @@
           <div id="pic0" class="carousel-item active">
             <img srcset="/static/img/top.jpg 1280w, /static/img/top_s.jpg 767w" src="/static/img/top.jpg" decoding="auto">
             <div class="carousel-caption d-none d-md-block">
-              <p>三段峡 <a title="詳細" target="_blank" href="http://www.akioota-navi.jp/html/kankou_mobi_sandankyo_access.html"><i class="bi bi-info-circle-fill"></i></a></p>
+              <p>Sandankyo <a title="Details" target="_blank" href="https://www.sandankyo.jp/en/"><i class="bi bi-info-circle-fill"></i></a></p>
             </div>
           </div>
           <div id="pic2" class="carousel-item">
             <img srcset="/static/img/top11.jpg 1280w, /static/img/top11_s.jpg 767w" src="/static/img/top11.jpg" decoding=async>
             <div class="carousel-caption d-none d-md-block">
-              <p>原爆ドーム <a title="詳細" target="_blank" href="http://www.city.hiroshima.lg.jp/www/dome/contents/1005000000027/index.html"><i class="bi bi-info-circle-fill"></i></a></p>
+              <p>Atomic Bomb Dome <a title="Details" target="_blank" href="https://www.japan.travel/en/spot/2202/"><i class="bi bi-info-circle-fill"></i></a></p>
             </div>
           </div>
           <div id="pic3" class="carousel-item">
             <img srcset="/static/img/top10.jpg 1280w, /static/img/top10_s.jpg 767w" src="/static/img/top10.jpg" decoding="async">
             <div class="carousel-caption d-none d-md-block">
-              <p>縮景園 <a title="詳細" target="_blank" href="https://shukkeien.jp/access/"><i class="bi bi-info-circle-fill"></i></a></p>
+              <p>Shukkeien <a title="Details" target="_blank" href="https://shukkeien.jp"><i class="bi bi-info-circle-fill"></i></a></p>
             </div>
           </div>
         </div>
@@ -40,10 +40,10 @@
            </button>
           <div id="navbarNav" class="navbar-collapse collapse justify-content-center">
             <ul class="nav nav-pills">
-              <li><a class="nav-link d-none d-md-block" title="ページトップへ" href="#top"><i class="bi bi-house-fill"></i></a></li>
-              <li><a class="nav-link" href="#psq">分離膜</a></li>
-              <li><a class="nav-link" href="#qy">量子収率</a></li>
-              <li><a class="nav-link" href="#link">リンク</a></li>
+              <li><a class="nav-link d-none d-md-block" title="Top Page" href="#top"><i class="bi bi-house-fill"></i></a></li>
+              <li><a class="nav-link" href="#psq">PSQ</a></li>
+              <li><a class="nav-link" href="#qy">QY</a></li>
+              <li><a class="nav-link" href="#link">Links</a></li>
             </ul>
           </div>
         </div>
