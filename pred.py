@@ -5,7 +5,6 @@ import sqlite3
 import numpy as np
 import pandas as pd
 from sklearn import linear_model,cross_decomposition
-from scipy.stats import binom_test
 from rdkit import Chem
 from rdkit import DataStructs
 from rdkit.Chem.Descriptors import *

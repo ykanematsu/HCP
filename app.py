@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 import datetime
 import socket
-from flask import Flask, render_template, request, redirect, url_for, Markup, abort, session
+from flask import Flask, render_template, request, redirect, url_for, abort, session
 from jinja2 import TemplateNotFound
 import numpy as np
 import pandas as pd
