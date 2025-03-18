@@ -17,12 +17,13 @@ from sklearn.gaussian_process import GaussianProcessRegressor as GPR
 from sklearn.feature_selection import SelectKBest, f_regression
 from rdkit.Avalon import pyAvalonTools
 import pubchempy as pcp
-from rdkit.Chem.PandasTools import ChangeMoleculeRendering
-ChangeMoleculeRendering(renderer='PNG')
+from rdkit.Chem.PandasTools import ChangeMoleculeRendering, PrintAsImageString
 
 gp=joblib.load('gpr200703')
 lmLp=joblib.load('Lp200704')
+lmLp.positive=False
 lmR=joblib.load('R200704')
+lmR.positive=False
 f_pc_all=['molecular_weight','xlogp','h_bond_donor_count','h_bond_acceptor_count','rotatable_bond_count','tpsa','complexity']
 
 def sigmoid(x):
@@ -34,32 +35,45 @@ class psq():
         self.f_pc_R=['molecular_weight','xlogp','h_bond_acceptor_count','nrot','nbridge']
         smi_c=sma.replace('([R])','').replace('[R]','').replace('([*])','').replace('[*]','').replace('(*)','').replace('*','')
         smi_r=sma.replace('([R])','C').replace('[R]','C').replace('([*])','C').replace('[*]','C').replace('(*)','C').replace('*','C')
-        morg=Chem.MolFromSmarts(sma)
         try:
+            morg=Chem.MolFromSmarts(sma)
             m=Chem.MolFromSmiles(smi_c)
             canonical_smiles=Chem.MolToSmiles(m)
-            self.smi=canonical_smiles
-            self.mol=Chem.MolFromSmiles(sma)
-            mrot=Chem.MolFromSmiles(smi_r)
-            si=[at.GetIdx() for at in morg.GetAtoms() if at.GetSymbol()=='*']
-            tmp=pd.Series(dtype='float64')
-            tmp['nbridge']=len(Chem.rdmolops.GetShortestPath(morg,si[0],si[1]))-1
-            tmp['nrot']=NumRotatableBonds(mrot)
-            a=pcp.get_compounds(smi_c,'smiles')[0]
-            fs=f_pc_all
-            for f in fs:
-                tmp[f]=eval('a.'+f)
-            X_Lp=[tmp[self.f_pc_Lp]]
-            X_R=[tmp[self.f_pc_R]]
-            self.Lp=round(10**lmLp.predict(X_Lp)[0],3)
-            self.R=round(sigmoid(lmR.predict(X_R)[0]),3)
-            self.Lp_coef=lmLp.coef_
-            self.X_Lp=X_Lp[0]
-            self.iupac_name=a.iupac_name
         except:
+            self.Lp=self.R='Not available; wrong SMILES!'
+            self.mol=None
+            self.smi=sma
+            return
+        self.smi=canonical_smiles
+        mol=Chem.MolFromSmiles(sma)
+        self.mol=PrintAsImageString(mol)
+        mrot=Chem.MolFromSmiles(smi_r)
+        si=[at.GetIdx() for at in morg.GetAtoms() if at.GetSymbol()=='*']
+        tmp=pd.Series(dtype=float)
+        if len(si)>1:
+          tmp['nbridge']=len(Chem.rdmolops.GetShortestPath(morg,si[0],si[1]))-1
+        else:
+          tmp['nbridge']=0
+        tmp['nrot']=NumRotatableBonds(mrot)
+        a=pcp.get_compounds(smi_c,'smiles')[0]
+        fs=f_pc_all
+        for f in fs:
+            tmp[f]=eval('a.'+f)
+        tmp=tmp.astype(float)
+        if tmp.isnull().sum()>0:
             self.Lp='Not available!'
             self.R='Not available!'
-            self.mol=''
+            self.mol=None
+            return
+
+        X_Lp=[tmp[self.f_pc_Lp]]
+        X_R=[tmp[self.f_pc_R]]
+        self.Lp=round(10**lmLp.predict(X_Lp)[0],3)
+        self.R=round(sigmoid(lmR.predict(X_R)[0]),3)
+        self.Lp_coef=lmLp.coef_
+        self.X_Lp=X_Lp[0]
+        self.iupac_name=a.iupac_name
+
     def submit(self):
         if not self.mol: return
         Lp=self.Lp

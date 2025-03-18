@@ -11,6 +11,7 @@ import matplotlib.cm as cm
 import sqlite3
 import cgitb, math, re
 from rdkit import Chem
+from rdkit.Chem.PandasTools import PrintAsImageString
 import pred
 app = Flask(__name__)
 app.secret_key='HUHU9'
@@ -34,7 +35,7 @@ def qy():
     print(smi)
     try:
         qy=round(pred.qy(smi)[0],3)
-        mol=Chem.MolFromSmiles(smi)
+        mol=PrintAsImageString(Chem.MolFromSmiles(smi))
     except:
         qy='Not available!'
         mol=''
