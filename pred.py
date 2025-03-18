@@ -32,10 +32,10 @@ class psq():
     def __init__(self,sma):
         self.f_pc_Lp=['molecular_weight','xlogp','h_bond_acceptor_count','tpsa']
         self.f_pc_R=['molecular_weight','xlogp','h_bond_acceptor_count','nrot','nbridge']
+        smi_c=sma.replace('([R])','').replace('[R]','').replace('([*])','').replace('[*]','').replace('(*)','').replace('*','')
+        smi_r=sma.replace('([R])','C').replace('[R]','C').replace('([*])','C').replace('[*]','C').replace('(*)','C').replace('*','C')
+        morg=Chem.MolFromSmarts(sma)
         try:
-            smi_c=sma.replace('([R])','').replace('[R]','').replace('([*])','').replace('[*]','').replace('(*)','').replace('*','')
-            smi_r=sma.replace('([R])','C').replace('[R]','C').replace('([*])','C').replace('[*]','C').replace('(*)','C').replace('*','C')
-            morg=Chem.MolFromSmarts(sma)
             m=Chem.MolFromSmiles(smi_c)
             canonical_smiles=Chem.MolToSmiles(m)
             self.smi=canonical_smiles
